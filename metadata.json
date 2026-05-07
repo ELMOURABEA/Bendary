@@ -1,0 +1,8 @@
+{
+  "name": "El Bendary Pharmacies",
+  "description": "A modern pharmacy application for ordering medicines, sending prescriptions, and medical insurance.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": []
+}
