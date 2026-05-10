@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 import { Home, ShoppingCart, FileText, ClipboardList, Menu, Bot } from 'lucide-react';
 import type { Tab } from './types';
 import HomeScreen from './screens/HomeScreen';
@@ -21,7 +21,7 @@ import { AppProvider, useAppContext } from './context/AppContext';
 function AppContent() {
   const [activeTab, setActiveTab] = useState<Tab>('home');
   const [appState, setAppState] = useState<'splash' | 'language' | 'main'>('splash');
-  const { cart, isDarkMode } = useAppContext();
+  const { cart, isDarkMode, language, t } = useAppContext();
 
   const cartItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -34,7 +34,7 @@ function AppContent() {
       case 'prescription':
         return <PrescriptionScreen />;
       case 'orders':
-        return <OrdersScreen />;
+        return <OrdersScreen onNavigate={setActiveTab} />;
       case 'menu':
         return <MenuScreen onNavigate={setActiveTab} />;
       case 'chat':
@@ -42,23 +42,25 @@ function AppContent() {
       case 'branches':
         return <BranchesScreen />;
       case 'account':
-        return <GenericScreen title="حسابي" onNavigate={setActiveTab} />;
+        return <GenericScreen title={t('my_account')} onNavigate={setActiveTab} />;
       case 'addresses':
-        return <GenericScreen title="العناوين" onNavigate={setActiveTab} />;
+        return <GenericScreen title={t('addresses')} onNavigate={setActiveTab} />;
       case 'favorites':
-        return <GenericScreen title="المفضلة" onNavigate={setActiveTab} />;
+        return <GenericScreen title={t('favorites')} onNavigate={setActiveTab} />;
       case 'privacy':
-        return <GenericScreen title="سياسة الخصوصية" onNavigate={setActiveTab} />;
+        return <GenericScreen title={t('privacy')} onNavigate={setActiveTab} />;
       case 'terms':
-        return <GenericScreen title="الشروط والأحكام" onNavigate={setActiveTab} />;
+        return <GenericScreen title={t('terms')} onNavigate={setActiveTab} />;
       case 'about':
-        return <GenericScreen title="معلومات عنا" onNavigate={setActiveTab} />;
+        return <GenericScreen title={t('about')} onNavigate={setActiveTab} />;
       case 'login':
-        return <GenericScreen title="تسجيل الدخول" onNavigate={setActiveTab} />;
+        return <GenericScreen title={t('login')} onNavigate={setActiveTab} />;
       default:
         return <HomeScreen onNavigate={setActiveTab} />;
     }
   };
+
+  const direction = language === 'ar' ? 'rtl' : 'ltr';
 
   if (appState === 'splash') {
       return (
@@ -81,7 +83,7 @@ function AppContent() {
   }
 
   return (
-    <div className={`flex justify-center w-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans ${isDarkMode ? 'dark' : ''}`} dir="rtl">
+    <div className={`flex justify-center w-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans ${isDarkMode ? 'dark' : ''}`} dir={direction}>
       {/* Mobile Wrapper */}
       <div className="w-full max-w-md bg-white dark:bg-gray-800 min-h-screen flex flex-col relative shadow-xl overflow-hidden pb-16">
         
@@ -94,7 +96,7 @@ function AppContent() {
         {activeTab !== 'chat' && (
             <button 
                 onClick={() => setActiveTab('chat')}
-                className="absolute bottom-20 right-4 bg-red-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-red-700 active:scale-95 transition-transform z-40 border-4 border-white dark:border-gray-800"
+                className={`absolute bottom-20 ${direction === 'rtl' ? 'right-4' : 'left-4'} bg-red-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-red-700 active:scale-95 transition-transform z-40 border-4 border-white dark:border-gray-800`}
             >
                 <Bot size={28} />
             </button>
@@ -104,32 +106,32 @@ function AppContent() {
         <nav className="absolute bottom-0 w-full bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center h-16 px-2 z-50">
           <NavItem 
             icon={<Home size={24} />} 
-            label="الرئيسية" 
+            label={t('home')} 
             isActive={activeTab === 'home'} 
             onClick={() => setActiveTab('home')} 
           />
           <NavItem 
             icon={<ShoppingCart size={24} />} 
-            label="السلة" 
+            label={t('cart')} 
             isActive={activeTab === 'cart'} 
             onClick={() => setActiveTab('cart')} 
             badge={cartItemsCount}
           />
           <NavItem 
             icon={<FileText size={24} />} 
-            label="الروشتة" 
+            label={t('prescription')} 
             isActive={activeTab === 'prescription'} 
             onClick={() => setActiveTab('prescription')} 
           />
           <NavItem 
             icon={<ClipboardList size={24} />} 
-            label="الطلبات" 
+            label={t('orders')} 
             isActive={activeTab === 'orders'} 
             onClick={() => setActiveTab('orders')} 
           />
           <NavItem 
             icon={<Menu size={24} />} 
-            label="القائمة" 
+            label={t('menu')} 
             isActive={activeTab === 'menu'} 
             onClick={() => setActiveTab('menu')} 
           />
@@ -154,7 +156,7 @@ function NavItem({
   onClick, 
   badge 
 }: { 
-  icon: React.ReactNode; 
+  icon: ReactNode; 
   label: string; 
   isActive: boolean; 
   onClick: () => void;

@@ -2,11 +2,13 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, Stethoscope } from 'lucide-react';
 import { GoogleGenAI } from '@google/genai';
 import { motion } from 'motion/react';
+import { useAppContext } from '../context/AppContext';
 
 // Initialize the API using the injected key
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export default function ChatScreen() {
+  const { t } = useAppContext();
   const [messages, setMessages] = useState<{role: 'user'|'model', text: string}[]>([
     { role: 'model', text: 'مرحباً بك في صيدليات البنداري! أنا المساعد الذكي الخاص بك للإجابة على استفساراتك الطبية. كيف يمكنني مساعدتك؟' }
   ]);
@@ -61,8 +63,8 @@ export default function ChatScreen() {
             </svg>
         </div>
         <div>
-          <h1 className="text-lg font-bold leading-tight">المساعد الطبي الذكي (AI)</h1>
-          <p className="text-xs text-red-100">بواسطة صيدليات البنداري</p>
+          <h1 className="text-lg font-bold leading-tight">{t('ai_assistant')}</h1>
+          <p className="text-xs text-red-100">{t('by_bendary')}</p>
         </div>
       </header>
 
@@ -111,7 +113,7 @@ export default function ChatScreen() {
             onKeyDown={(e) => {
                 if(e.key === 'Enter') handleSend();
             }}
-            placeholder="اكتب استفسارك الطبي هنا..."
+            placeholder={t('chat_placeholder')}
             className="flex-1 bg-gray-100 border border-transparent focus:border-red-300 focus:bg-white rounded-full py-3 px-4 outline-none transition-colors"
           />
           <button 

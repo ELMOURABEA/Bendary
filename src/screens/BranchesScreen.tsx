@@ -1,27 +1,30 @@
 import { MapPin, Phone, MessageCircle, AlertCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import { QRCodeSVG } from 'qrcode.react';
+import { useAppContext } from '../context/AppContext';
 
 const branches = [
-  { name: 'المهندسين', address: '69 ش شهاب تقاطع لبنان بجوار مزايا', phones: ['01210222822', '01210222922', '0233463222', '0233488777'] },
-  { name: 'ش الجلاء (1)', address: 'أمام موقف الجلاء', phones: ['0403298793', '01200400094', '01207222322'] },
-  { name: 'ش الجلاء (2)', address: 'أمام قاعة جرين بالاس', phones: ['0403546290'] },
-  { name: 'ش الجلاء (3)', address: 'بجوار الأمن المركزي', phones: ['0403282323', '01200400461'] },
-  { name: 'ش البورصة', address: 'بجوار قسم أول - أسفل مول الشهاوي', phones: ['0403358874', '01121369758'] },
-  { name: 'ش الأشرف', address: 'مع المرشحة', phones: ['0403313012', '01200400459'] },
-  { name: 'كفر عصام', address: 'بجوار مدرسة أم المؤمنين', phones: ['0403332816', '01207271272'] },
-  { name: 'ش سعيد', address: 'آخر ش سعيد مع عمرو بن عبد العزيز', phones: ['0403318734', '01200400469'] },
-  { name: 'المعرض', address: 'طريق القاهرة الزراعي أمام مديرية الطب', phones: ['0403329519', '01200400424'] },
-  { name: 'طريق اسكندرية الزراعي', address: 'بعد بنزينة اندريا أمام بوابة الجامعة - الطب النفسي', phones: ['0403344350', '01200400471'] },
-  { name: 'المحافظة', address: 'أول ش النحاس من ش البحر', phones: ['0403333406', '01222258867'] },
+  { name: 'المهندسين', nameEn: 'Mohandeseen', address: '69 ش شهاب تقاطع لبنان بجوار مزايا', addressEn: '69 Shehab St., next to Mazaya', phones: ['01210222822', '01210222922', '0233463222', '0233488777'] },
+  { name: 'ش الجلاء (1)', nameEn: 'El Galaa St. (1)', address: 'أمام موقف الجلاء', addressEn: 'In front of El Galaa station', phones: ['0403298793', '01200400094', '01207222322'] },
+  { name: 'ش الجلاء (2)', nameEn: 'El Galaa St. (2)', address: 'أمام قاعة جرين بالاس', addressEn: 'In front of Green Palace', phones: ['0403546290'] },
+  { name: 'ش الجلاء (3)', nameEn: 'El Galaa St. (3)', address: 'بجوار الأمن المركزي', addressEn: 'Next to Central Security', phones: ['0403282323', '01200400461'] },
+  { name: 'ش البورصة', nameEn: 'Borsa St.', address: 'بجوار قسم أول - أسفل مول الشهاوي', addressEn: 'Next to 1st Police Dept. - below Shahawy Mall', phones: ['0403358874', '01121369758'] },
+  { name: 'ش الأشرف', nameEn: 'Al Ashraf St.', address: 'مع المرشحة', addressEn: 'Intersection with El Morshaha', phones: ['0403313012', '01200400459'] },
+  { name: 'كفر عصام', nameEn: 'Kafr Essam', address: 'بجوار مدرسة أم المؤمنين', addressEn: 'Next to Omm El Mo2meneen School', phones: ['0403332816', '01207271272'] },
+  { name: 'ش سعيد', nameEn: 'Saeed St.', address: 'آخر ش سعيد مع عمرو بن عبد العزيز', addressEn: 'End of Saeed St. with Amr Ibn Abd Elaziz', phones: ['0403318734', '01200400469'] },
+  { name: 'المعرض', nameEn: 'El Maarad', address: 'طريق القاهرة الزراعي أمام مديرية الطب', addressEn: 'Cairo Agricultural Road', phones: ['0403329519', '01200400424'] },
+  { name: 'طريق اسكندرية الزراعي', nameEn: 'Alex Agriculture Road', address: 'بعد بنزينة اندريا أمام بوابة الجامعة - الطب النفسي', addressEn: 'After Andrea gas station', phones: ['0403344350', '01200400471'] },
+  { name: 'المحافظة', nameEn: 'El Mohafza', address: 'أول ش النحاس من ش البحر', addressEn: 'Start of Nahas st. from Bahr st.', phones: ['0403333406', '01222258867'] },
 ];
 
 export default function BranchesScreen() {
+  const { t, language } = useAppContext();
+
   return (
     <div className="flex flex-col h-full bg-gray-50 pb-20 overflow-y-auto">
       <header className="bg-white px-4 py-4 sticky top-0 z-10 shadow-sm text-center border-b border-gray-100">
-        <h1 className="text-lg font-bold text-gray-800">فروعنا</h1>
-        <p className="text-sm text-red-600 font-semibold mt-1">نقدم خدماتنا في أكثر من ١٥ فرع</p>
+        <h1 className="text-lg font-bold text-gray-800">{t('branches_title')}</h1>
+        <p className="text-sm text-red-600 font-semibold mt-1">{t('branches_count')}</p>
       </header>
       
       {/* Support Info Cards */}
@@ -34,7 +37,7 @@ export default function BranchesScreen() {
             <div className="flex-1">
               <h3 className="font-bold text-green-800 flex items-center gap-2 mb-1">
                 <MessageCircle size={18} />
-                واتس آب الفروع
+                {t('whatsapp_branches')}
               </h3>
               <p className="text-green-700 text-sm font-medium mb-3" dir="ltr">01200400461</p>
               <a 
@@ -43,7 +46,7 @@ export default function BranchesScreen() {
                 rel="noreferrer"
                 className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm hover:bg-green-700 active:scale-95 transition-all inline-block"
               >
-                مراسلة
+                {t('message')}
               </a>
             </div>
             
@@ -61,7 +64,7 @@ export default function BranchesScreen() {
             <div>
               <h3 className="font-bold text-orange-800 flex items-center gap-2 mb-1">
                 <AlertCircle size={18} />
-                شكاوي واقتراحات
+                {t('complaints')}
               </h3>
               <p className="text-orange-700 text-sm font-medium" dir="ltr">01200400089</p>
             </div>
@@ -69,7 +72,7 @@ export default function BranchesScreen() {
               href="tel:01200400089" 
               className="bg-orange-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm hover:bg-orange-700 active:scale-95 transition-all"
             >
-              اتصال
+              {t('call')}
             </a>
         </motion.div>
       </div>
@@ -85,10 +88,10 @@ export default function BranchesScreen() {
           >
             <h3 className="font-bold text-lg text-red-600 mb-2 flex items-center gap-2">
               <MapPin size={20} />
-              {branch.name}
+              {language === 'en' ? branch.nameEn : branch.name}
             </h3>
             <p className="text-gray-700 dark:text-gray-300 text-sm mb-4 leading-relaxed font-medium">
-              {branch.address}
+              {language === 'en' ? branch.addressEn : branch.address}
             </p>
             <div className="space-y-2 bg-gray-50 dark:bg-gray-700 p-3 rounded-xl border border-gray-100 dark:border-gray-600 mb-4">
               {branch.phones.map((phone, pIdx) => (
